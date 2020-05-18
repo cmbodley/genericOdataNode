@@ -1,0 +1,16 @@
+{
+  "name": "genericodata",
+  "version": "1.0.0",
+  "description": "an api to handle one set of data with mongodb",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "odata",
+    "mongo",
+    "generic"
+  ],
+  "author": "cmbodley",
+  "license": "ISC"
+}
