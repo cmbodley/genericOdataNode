@@ -1,7 +1,6 @@
 
 import * as mongo from 'mongodb';
-
-import { applicationSettings } from './config';
+import * as applicationSettings from "./config.json";
 import { MongoError } from 'mongodb';
 
 export class MongoAbstraction {

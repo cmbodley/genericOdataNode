@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
-import { applicationSettings } from './config';
+import * as applicationSettings from "./config.json";
+
 import { MongoAbstraction } from './mongoEf';
 
 export class Routes {

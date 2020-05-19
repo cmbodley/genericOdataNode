@@ -1,0 +1,6 @@
+{
+    "mongoDb": "testData",
+    "mongoCollection": ["testCollection", "cars"],
+    "mongoUrl": "localhost:88",
+    "portNumber": 3000
+}

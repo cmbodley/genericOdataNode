@@ -1,5 +1,5 @@
 import app from "./app";
-import { applicationSettings } from './config';
+import * as applicationSettings from "./config.json";
 
 const PORT = applicationSettings.portNumber;
 
