@@ -27,6 +27,10 @@
     "nodemon": "^2.0.4",
     "q": "^1.5.1",
     "routes": "^2.1.0",
-    "simple-odata-server": "^1.1.1"
+    "simple-odata-server": "^1.1.1",
+    "tsc": "^1.20150623.0"
+  },
+  "devDependencies": {
+    "typescript": "^3.9.2"
   }
 }
