@@ -16,9 +16,12 @@ export class Routes {
                 res.status(200).send({
                     message: 'Service Loaded Successfully'
                 })
-            })
+            });
 
         applicationSettings.mongoCollection.forEach(collection => {
+            if (collection === 'close' || collection === '' || collection === null || collection === undefined) {
+                return;
+            }
 
             // This application is supposed to be a micro service with a potential end point for odata
             app.route(`/${collection}`)
