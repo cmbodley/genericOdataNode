@@ -28,11 +28,9 @@ export class Routes {
             })
 
         // more detail
-        app.route(`/${applicationSettings.mongoCollection}/:id`)
+        app.route(`/${applicationSettings.mongoCollection}/:_id`)
             // get specific item
-            .get((req: Request, res: Response) => {
-
-                console.log(req.params['id']);
+            .get((req: Request, res: Response) => {                
                 res.status(200).send({
                     message: "arrrg"
                 })
