@@ -14,47 +14,58 @@ export class Routes {
         app.route('/')
             .get((req: Request, res: Response) => {
                 res.status(200).send({
-                    message: 'GET request successfulll!!!!'
+                    message: 'Service Loaded Successfully'
                 })
             })
 
-        // This application is supposed to be a micro service with a potential end point for odata
-        app.route(`/${applicationSettings.mongoCollection}`)
-            // GET endpoint 
-            .get((req: Request, res: Response) => {
-                // Get all items
-                res.status(200).send({
-                    message: 'GET request successfulll!!!!'
-                })
-            })
-            // POST endpoint
-            .post((req: Request, res: Response) => {
-                // add a new item
-                this.service.AddItem(req.body);
-                res.status(200).send({
-                    message: 'POST request successfulll!!!!'
-                })
-            })
+        applicationSettings.mongoCollection.forEach(collection => {
 
-        // more detail
-        app.route(`/${applicationSettings.mongoCollection}/:_id`)
-            // get specific item
-            .get((req: Request, res: Response) => {                
-                res.status(200).send({
-                    message: "arrrg"
+            // This application is supposed to be a micro service with a potential end point for odata
+            app.route(`/${collection}`)
+                // GET endpoint 
+                .get(async (req: Request, res: Response) => {
+                    // Get all items
+                    const items = await this.service.getItems(collection)
+                    res.status(200).send({
+                        message: items
+                    })
+                    await this.service.disconnect();
                 })
-            })
-            .put((req: Request, res: Response) => {
-                // Update an item
-                res.status(200).send({
-                    message: 'PUT request successfulll!!!!'
+                // POST endpoint
+                .post(async (req: Request, res: Response) => {
+                    // add a new item
+                    const item = await this.service.AddItem(req.body, collection);
+                    res.status(200).send({
+                        message: item
+                    })
+                    await this.service.disconnect();
                 })
-            })
-            .delete((req: Request, res: Response) => {
-                // Delete an item
-                res.status(200).send({
-                    message: 'DELETE request successfulll!!!!'
+
+            // more detail
+            app.route(`/${collection}/:_id`)
+                // get specific item
+                .get(async (req: Request, res: Response) => {
+                    const item = await this.service.getItem(req.params['_id'], collection)
+                    res.status(200).send({
+                        message: item
+                    })
+                    await this.service.disconnect();
                 })
-            })
+                .put(async (req: Request, res: Response) => {
+                    // Update an item
+                    const item = await this.service.EditItem(req.params["_id"], req.body, collection);
+
+                    res.status(200).send({
+                        message: item
+                    })
+                })
+                .delete(async (req: Request, res: Response) => {
+                    // Delete an item
+                    const item = await this.service.DeleteItem(req.params["_id"], collection);
+                    res.status(200).send({
+                        message: item
+                    })
+                })
+        });
     }
 }

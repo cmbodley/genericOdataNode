@@ -1,6 +1,6 @@
 export interface settings {
     mongoDb: string;
-    mongoCollection: string;
+    mongoCollection: string[];
     mongoUrl: string;
     portNumber: number;
 }
@@ -8,7 +8,7 @@ export interface settings {
 
 export const applicationSettings : settings = {
     mongoDb: "testData",
-    mongoCollection: "testCollection",
+    mongoCollection: ["testCollection", "cars"],
     mongoUrl: "localhost:88",
     portNumber: 3000
 }
