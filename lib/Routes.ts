@@ -1,7 +1,15 @@
 import { Request, Response } from "express";
 import { applicationSettings } from './config';
+import { MongoAbstraction } from './mongoEf';
 
 export class Routes {
+
+    private service: MongoAbstraction;
+
+    constructor() {
+        this.service = new MongoAbstraction();
+    }
+
     public routes(app): void {
         app.route('/')
             .get((req: Request, res: Response) => {
@@ -22,6 +30,7 @@ export class Routes {
             // POST endpoint
             .post((req: Request, res: Response) => {
                 // add a new item
+                this.service.AddItem(req.body);
                 res.status(200).send({
                     message: 'POST request successfulll!!!!'
                 })
