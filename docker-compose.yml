@@ -7,7 +7,7 @@ services:
     volumes:
       - mongoData:/data/db 
       - mongoConfig:/data/configdb
-  genericApi:
+  generic-api:    
     ports: 
      - 80:3000
     build: 
