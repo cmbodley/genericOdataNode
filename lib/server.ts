@@ -1,5 +1,5 @@
-import {App} from "app";
-import {portNumber} from "config.json";
+import {App} from "./app";
+import {portNumber} from "./config.json";
 
 const PORT = portNumber;
 const app = new App().app;

@@ -1,7 +1,7 @@
 
 
 import { MongoClient, ObjectID } from 'mongodb';
-import { mongoDb, mongoUrl } from 'config.json'
+import { mongoDb, mongoUrl } from './config.json'
 
 export class MongoAbstraction {
 

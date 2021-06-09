@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { mongoCollection } from "config.json";
+import { mongoCollection } from "./config.json";
 import { MongoAbstraction } from './mongoEf';
 
 export class Routes {
