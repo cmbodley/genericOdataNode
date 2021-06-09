@@ -27,17 +27,30 @@ export class MongoAbstraction {
         return await results;
     }
 
-    async AddItem(item: any, collection: string) {
+    async addItem(item: any, collection: string) {
         await MongoAbstraction.connect(this.url);
         return await this.getCollection(collection).insertOne(item);
     }
 
-    async EditItem(id: string, item: any, collection: string) {
+    async editItem(id: string, item: any, collection: string) {
         await MongoAbstraction.connect(this.url);
-        return await this.getCollection(collection).updateOne({ "_id": new ObjectID(id) }, { $set: item })
+        const newItem = this.safeConvert(item);
+        return await this.getCollection(collection).updateOne({ "_id": new ObjectID(id) }, { $set: newItem })
     }
 
-    async DeleteItem(id: string, collection: string) {
+    safeConvert(item: any): any {
+        const keys = Object.keys(item);
+        let newObj = {};
+        keys.forEach(a => {
+            if(a !== "_id"){
+                newObj[a] = item[a];
+            }
+        });
+        console.log(newObj);
+        return newObj;
+    }
+
+    async deleteItem(id: string, collection: string) {
         await MongoAbstraction.connect(this.url);
         return await this.getCollection(collection).deleteOne({ "_id": new ObjectID(id) })
     }

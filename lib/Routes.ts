@@ -37,7 +37,7 @@ export class Routes {
                 // POST endpoint
                 .post(async (req: Request, res: Response) => {
                     // add a new item
-                    const item = await this.service.AddItem(req.body, collection);
+                    const item = await this.service.addItem(req.body, collection);
                     res.status(200).send({
                         message: item
                     })
@@ -56,7 +56,7 @@ export class Routes {
                 })
                 .put(async (req: Request, res: Response) => {
                     // Update an item
-                    const item = await this.service.EditItem(req.params["_id"], req.body, collection);
+                    const item = await this.service.editItem(req.params["_id"], req.body, collection);
 
                     res.status(200).send({
                         message: item
@@ -64,7 +64,7 @@ export class Routes {
                 })
                 .delete(async (req: Request, res: Response) => {
                     // Delete an item
-                    const item = await this.service.DeleteItem(req.params["_id"], collection);
+                    const item = await this.service.deleteItem(req.params["_id"], collection);
                     res.status(200).send({
                         message: item
                     })
