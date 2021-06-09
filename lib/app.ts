@@ -1,9 +1,8 @@
 import * as express from "express";
-import * as bodyParser from "body-parser";
-
+import {json, urlencoded} from "body-parser";
 import { Routes } from './Routes';
 
-class App {
+export class App {
 
     public app: express.Application;
     public routePrv: Routes = new Routes();
@@ -16,11 +15,10 @@ class App {
 
     private config(): void{
         // support application/json type post data
-        this.app.use(bodyParser.json());
+        this.app.use(json());
         //support application/x-www-form-urlencoded post data
-        this.app.use(bodyParser.urlencoded({ extended: false }));
+        this.app.use(urlencoded({ extended: false }));
     }
 
 }
 
-export default new App().app;

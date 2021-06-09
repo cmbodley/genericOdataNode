@@ -1,7 +1,8 @@
-import app from "./app";
-import * as applicationSettings from "./config.json";
+import {App} from "app";
+import {portNumber} from "config.json";
 
-const PORT = applicationSettings.portNumber;
+const PORT = portNumber;
+const app = new App().app;
 
 app.listen(PORT, () => {
     console.log('Express server listening on port ' + PORT);

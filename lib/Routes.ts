@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
-import * as applicationSettings from "./config.json";
-
+import { mongoCollection } from "config.json";
 import { MongoAbstraction } from './mongoEf';
 
 export class Routes {
@@ -19,7 +18,7 @@ export class Routes {
                 })
             });
 
-        applicationSettings.mongoCollection.forEach(collection => {
+        mongoCollection.forEach(collection => {
             if (collection === 'close' || collection === '' || collection === null || collection === undefined) {
                 return;
             }
