@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { mongoCollection } from "./config.json";
 import { MongoAbstraction, error } from './mongoEf';
 import { createFilter, createQuery } from "odata-v4-mongodb";
+import { SwaggerService } from "./swaggerService";
 
 export class Routes {
 
@@ -12,6 +13,7 @@ export class Routes {
     }
 
     public routes(app): void {
+        
         app.route('/')
             .get((req: Request, res: Response) => {
                 res.status(200).send({
@@ -19,12 +21,11 @@ export class Routes {
                 })
             });
 
-        app.route('/test')
+        app.route('/swaggerjson')
         .get((req: Request, res: Response) =>{
-            const query = req.url.split('?');
-            const createdQuery = createQuery(query[1]);
+            const swagJson = new SwaggerService(req.baseUrl);
             res.status(200).send({
-                message: createdQuery
+                message: swagJson.swagger
             })
         });
 

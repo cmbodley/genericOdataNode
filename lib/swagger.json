@@ -1,0 +1,315 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Generic API Repostory",
+    "description": "A mongodb backed Repository for general data store",
+    "version": "v1"
+  },
+  "paths": {
+    "/": {
+      "get": {
+        "operationId": "getRootMessage",
+        "summary": "Gets the default root message",
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/emptyObject" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/swaggerjson": {
+      "get": {
+        "operationId": "getSwaggerJson",
+        "summary": "Gets the swagger json file usefull for angular service updates or for updating the json file so swagger documents the api",
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/emptyObject" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/testCollection/{id}": {
+      "get": {
+        "operationId": "gettestCollection",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": false,
+            "allowEmptyValue": false
+          }
+        ],
+        "summary": "This action Query(s) for the testCollection Repository",
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/emptyObject" }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "posttestCollection",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "allowEmptyValue": true
+          }
+        ],
+        "summary": "This action Add(s) for the testCollection Repository",
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/emptyObject" }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "operationId": "puttestCollection",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "allowEmptyValue": true
+          }
+        ],
+        "summary": "This action Edit(s) for the testCollection Repository",
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/emptyObject" }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deletetestCollection",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "allowEmptyValue": true
+          }
+        ],
+        "summary": "This action Delete(s) for the testCollection Repository",
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/emptyObject" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cars/{id}": {
+      "get": {
+        "operationId": "getcars",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": false,
+            "allowEmptyValue": false
+          }
+        ],
+        "summary": "This action Query(s) for the cars Repository",
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/emptyObject" }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "postcars",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "allowEmptyValue": true
+          }
+        ],
+        "summary": "This action Add(s) for the cars Repository",
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/emptyObject" }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "operationId": "putcars",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "allowEmptyValue": true
+          }
+        ],
+        "summary": "This action Edit(s) for the cars Repository",
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/emptyObject" }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deletecars",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "allowEmptyValue": true
+          }
+        ],
+        "summary": "This action Delete(s) for the cars Repository",
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/emptyObject" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/countries/{id}": {
+      "get": {
+        "operationId": "getcountries",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": false,
+            "allowEmptyValue": false
+          }
+        ],
+        "summary": "This action Query(s) for the countries Repository",
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/emptyObject" }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "postcountries",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "allowEmptyValue": true
+          }
+        ],
+        "summary": "This action Add(s) for the countries Repository",
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/emptyObject" }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "operationId": "putcountries",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "allowEmptyValue": true
+          }
+        ],
+        "summary": "This action Edit(s) for the countries Repository",
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/emptyObject" }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deletecountries",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "allowEmptyValue": true
+          }
+        ],
+        "summary": "This action Delete(s) for the countries Repository",
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/emptyObject" }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": { "emptyObject": { "type": "object", "properties": {} } }
+  }
+}

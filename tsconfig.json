@@ -10,7 +10,8 @@
         "resolveJsonModule": true
     },
     "include": [
-        "lib/**/*.ts"
+        "lib/**/*.ts",
+        "lib/swagger-interfaces/*.ts"
     ],
     "exclude": [
         "node_modules"
