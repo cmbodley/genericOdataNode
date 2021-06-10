@@ -1,14 +1,29 @@
-export interface settings {
-    mongoDb: string;
-    mongoCollection: string[];
-    mongoUrl: string;
-    portNumber: number;
+import { SwaggerService } from "./swaggerService";
+import { writeFileSync } from 'fs';
+import * as p from 'path';
+import * as config from './config.json';
+
+// update the config
+const repos = process.env.REPOS;
+
+const newConfig = {
+    mongoDb: config.mongoDb,    
+    mongoUrl: config.mongoUrl,
+    portNumber: config.portNumber,
+    mongoCollection: [] as string[]
+} as any;
+
+
+if(repos !== null && repos !== undefined){
+    const repoItems = repos.split(',');
+    newConfig['mongoCollection'] = repoItems;
+    console.log({newConfig});
+    writeFileSync(`${p.join(__dirname,'config.json')}`, JSON.stringify(newConfig), {encoding:'utf8', flag:'w'});
 }
 
 
-export const applicationSettings : settings = {
-    mongoDb: "testData",
-    mongoCollection: ["testCollection", "cars"],
-    mongoUrl: "localhost:88",
-    portNumber: 3000
-}
+// update the swagger
+const swagJson = new SwaggerService(newConfig.mongoCollection);
+const swag = swagJson.swagger;
+writeFileSync(`${p.join(__dirname,'swagger.json')}`, JSON.stringify(swag), {encoding:'utf8', flag:'w'});
+

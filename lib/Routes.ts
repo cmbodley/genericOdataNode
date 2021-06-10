@@ -1,8 +1,9 @@
 import { Request, Response } from "express";
 import { mongoCollection } from "./config.json";
 import { MongoAbstraction, error } from './mongoEf';
-import { createFilter, createQuery } from "odata-v4-mongodb";
-import { SwaggerService } from "./swaggerService";
+import { createQuery } from "odata-v4-mongodb";
+
+
 
 export class Routes {
 
@@ -21,13 +22,11 @@ export class Routes {
                 })
             });
 
-        app.route('/swaggerjson')
-        .get((req: Request, res: Response) =>{
-            const swagJson = new SwaggerService(req.baseUrl);
-            res.status(200).send({
-                message: swagJson.swagger
-            })
-        });
+        // app.route('/swaggerjson')
+        // .get((req: Request, res: Response) =>{
+
+        //     res.status(200).send(swag)
+        // });
 
 
 
@@ -44,15 +43,11 @@ export class Routes {
 
                     if (filterQuery === null || filterQuery === undefined || filterQuery.length <= 1) {
                         const items = await this.service.getItems(collection).catch(error)
-                        res.status(200).send({
-                            body: items
-                        })
+                        res.status(200).send(items)
                     } else {
                         const query = createQuery(filterQuery[1]);
                         const items = await this.service.queryItems(collection, query).catch(error);
-                        res.status(200).send({
-                            body: items
-                        });
+                        res.status(200).send(items);
                     }
                     this.service.disconnect();
                 });
@@ -63,18 +58,14 @@ export class Routes {
                 .get(async (req: Request, res: Response) => {
                     // Get all items
                     const items = await this.service.getItems(collection).catch(error)
-                    res.status(200).send({
-                        body: items
-                    })
+                    res.status(200).send(items)
                     this.service.disconnect();
                 })
                 // POST endpoint
                 .post(async (req: Request, res: Response) => {
                     // add a new item
                     const item = await this.service.addItem(req.body, collection).catch(error);
-                    res.status(200).send({
-                        body: item
-                    })
+                    res.status(200).send(item)
                     this.service.disconnect();
                 });
 
@@ -89,7 +80,7 @@ export class Routes {
                     }
                 }
                 res.status(200).send({
-                    body: "items added successfull"
+                    message: "items added successfull"
                 })
                 this.service.disconnect();                
             });
@@ -99,24 +90,18 @@ export class Routes {
                 // get specific item
                 .get(async (req: Request, res: Response) => {
                     const item = await this.service.getItem(req.params['_id'], collection).catch(error);
-                    res.status(200).send({
-                        body: item
-                    })
+                    res.status(200).send(item)
                     this.service.disconnect();
                 })
                 .put(async (req: Request, res: Response) => {
                     // Update an item
                     const item = await this.service.editItem(req.params["_id"], req.body, collection).catch(error);
-                    res.status(200).send({
-                        body: item
-                    })
+                    res.status(200).send(item)
                 })
                 .delete(async (req: Request, res: Response) => {
                     // Delete an item
                     const item = await this.service.deleteItem(req.params["_id"], collection).catch(error);
-                    res.status(200).send({
-                        body: item
-                    })
+                    res.status(200).send(item)
                 });
         });
     }

@@ -1,14 +1,22 @@
-import { mongoCollection } from "./config.json";
-import { Content, Info, ObjectType, RefLink, RootObject, SchemaLink, SwaggerParameter, SwagResponse, Verbs } from './swagger-interfaces/info'
-export class SwaggerService {
+import { 
+    Content, 
+    Info, 
+    ObjectType, 
+    RefLink, 
+    RootObject, 
+    SchemaLink, 
+    SwaggerParameter, 
+    SwagResponse, 
+    Verbs 
+} from './swagger-interfaces/info';
 
-    private baseUrl: string;
+export class SwaggerService {
+    
     private collections: string[];
     public swagger: RootObject;
 
-    constructor(url: string) {
-        this.baseUrl = url;
-        this.collections = mongoCollection;
+    constructor(collection: string[]) {        
+        this.collections = collection;
         this.swagger = {
             openapi: "3.0.0",
             info: {
@@ -44,20 +52,6 @@ export class SwaggerService {
                 }
             } as Verbs
         } as any;
-
-        this.swagger.paths['/swaggerjson'] = {
-            "get": {
-                operationId: "getSwaggerJson",
-                summary: "Gets the swagger json file usefull for angular service updates or for updating the json file so swagger documents the api",
-                responses: {
-                    "200": {
-                        description: "200 response",
-                        content: this.getEmptyResponse()
-                    } as SwagResponse
-                }
-            } as Verbs
-        } as any;
-
     }
 
     getEmptyResponse() {
@@ -70,23 +64,23 @@ export class SwaggerService {
         } as Content
     }
 
-    getIdParameter(required: boolean){
+    getIdParameter(required: boolean) {
         return {
-            name:"id",
-            in:"path",
+            name: "id",
+            in: "path",
             required: required,
-            allowEmptyValue: required          
+            allowEmptyValue: required
         } as SwaggerParameter;
     }
 
-    setupCollectionPaths() {        
+    setupCollectionPaths() {
         this.collections.forEach(a => {
-            const basicItems = ['get', 'post', 'put', 'delete'];
-            const pathItem = {} as any;                
-            basicItems.forEach(b => {                
+            const basicItems = ['get', 'put', 'delete'];
+            const pathItem = {} as any;
+            basicItems.forEach(b => {
                 pathItem[b] = {
                     operationId: `${b}${a}`,
-                    parameters:[this.getIdParameter(true)],
+                    parameters: [this.getIdParameter(true)],
                     summary: `This action ${this.getAction(b)} for the ${a} Repository`,
                     responses: {
                         "200": {
@@ -97,22 +91,72 @@ export class SwaggerService {
                 } as Verbs
             });
 
-            
+
+
+            const getItem = {
+                operationId: `getsAll${a}`,
+                summary: `This action ${this.getAction('get')} for the ${a} Repository`,
+                responses: {
+                    "200": {
+                        description: "200 response",
+                        content: this.getEmptyResponse()
+                    } as SwagResponse
+                }
+            }
+
+            const postItem = {
+                operationId: `getsAll${a}`,
+                summary: `This action ${this.getAction('get')} for the ${a} Repository`,
+                responses: {
+                    "200": {
+                        description: "200 response",
+                        content: this.getEmptyResponse()
+                    } as SwagResponse
+                }
+            }
 
             this.swagger.paths[`/${a}/{id}`] = pathItem;
-            //add the other get         
-
-
-
+            this.swagger.paths[`/${a}`] = {
+                'get': getItem,
+                'post': postItem
+            }
         });
 
-        // this.collections.forEach(a => {
-        //     const advancedItems = ['list', 'odata'];
-        // })      
+        this.collections.forEach(a => {
+            const advancedItems = ['list', 'odata'];
+            advancedItems.forEach(b => {
+                const pathItem = {} as any;
+                if (b == 'list') {
+                    pathItem['post'] = {
+                        operationId: `post${a}${b}`,
+                        summary: `Adds an array of objects to the ${a} Collection`,
+                        responses: {
+                            "200": {
+                                description: "200 response",
+                                content: this.getEmptyResponse()
+                            } as SwagResponse
+                        }
+                    } as Verbs
+                } else {
+                    pathItem['get'] = {
+                        operationId: `get${a}${b}`,
+                        summary: `An Odata Endpoint to query items form ${a} Collection`,
+                        responses: {
+                            "200": {
+                                description: "200 response",
+                                content: this.getEmptyResponse()
+                            } as SwagResponse
+                        }
+                    } as Verbs                 
+                }
+
+                this.swagger.paths[`/${a}/${b}`] = pathItem
+            });
+        })
     }
 
-    getAction(verb: string){
-        switch(verb){
+    getAction(verb: string) {
+        switch (verb) {
             case 'get':
                 return 'Query(s)';
             case 'post':
