@@ -4,6 +4,10 @@ import { MongoClient, ObjectID } from 'mongodb';
 import { FilterQuery } from 'mongoose';
 import { mongoDb, mongoUrl } from './config.json'
 
+export function error(error:any){
+    console.log({error});
+}
+
 export class MongoAbstraction {
 
     dbConnection: any = null;
@@ -15,8 +19,8 @@ export class MongoAbstraction {
     }
 
     async queryItems(collection: string, query: FilterQuery<any>) : Promise<any[]> {
-        await MongoAbstraction.connect(this.url);
-        const dbCollection = await this.getCollection(collection);
+        await MongoAbstraction.connect(this.url).catch(error);
+        const dbCollection = this.getCollection(collection);
         const results = dbCollection
             .find(query.query)
             .project(query.projection)
@@ -28,26 +32,26 @@ export class MongoAbstraction {
     }
 
     async getItems(collection: string): Promise<any[]> {
-        await MongoAbstraction.connect(this.url);
-        const dbCollection = await this.getCollection(collection);
+        await MongoAbstraction.connect(this.url).catch(error);
+        const dbCollection = this.getCollection(collection);
         const results = dbCollection.find().toArray();
         return await results;
     }
 
     async getItem(id: string, collection: string): Promise<any[]> {
-        await MongoAbstraction.connect(this.url);
-        const dbCollection = await this.getCollection(collection);
+        await MongoAbstraction.connect(this.url).catch(error);
+        const dbCollection = this.getCollection(collection);
         const results = dbCollection.find({ "_id": new ObjectID(id) }).toArray();
         return await results;
     }
 
     async addItem(item: any, collection: string) {
-        await MongoAbstraction.connect(this.url);
-        return await this.getCollection(collection).insertOne(item);
+        await MongoAbstraction.connect(this.url).catch(error);
+        return this.getCollection(collection).insertOne(item);
     }
 
     async editItem(id: string, item: any, collection: string) {
-        await MongoAbstraction.connect(this.url);
+        await MongoAbstraction.connect(this.url).catch(error);
         const newItem = this.safeConvert(item);
         return await this.getCollection(collection).updateOne({ "_id": new ObjectID(id) }, { $set: newItem })
     }
@@ -65,7 +69,7 @@ export class MongoAbstraction {
     }
 
     async deleteItem(id: string, collection: string) {
-        await MongoAbstraction.connect(this.url);
+        await MongoAbstraction.connect(this.url).catch(error);
         return await this.getCollection(collection).deleteOne({ "_id": new ObjectID(id) })
     }
 
