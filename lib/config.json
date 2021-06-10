@@ -1,6 +1,6 @@
 {
     "mongoDb": "repository",
-    "mongoCollection": ["testCollection", "cars"],
+    "mongoCollection": ["testCollection", "cars", "countries"],
     "mongoUrl": "mongoDb",
     "portNumber": 3000
 }

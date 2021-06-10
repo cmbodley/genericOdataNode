@@ -1,6 +1,7 @@
 
 
 import { MongoClient, ObjectID } from 'mongodb';
+import { FilterQuery } from 'mongoose';
 import { mongoDb, mongoUrl } from './config.json'
 
 export class MongoAbstraction {
@@ -11,6 +12,19 @@ export class MongoAbstraction {
 
     constructor() {
 
+    }
+
+    async queryItems(collection: string, query: FilterQuery<any>) : Promise<any[]> {
+        await MongoAbstraction.connect(this.url);
+        const dbCollection = await this.getCollection(collection);
+        const results = dbCollection
+            .find(query.query)
+            .project(query.projection)
+            .sort(query.sort)
+            .skip(query.skip ?? 0)
+            .limit(query.limit ?? 100)
+            .toArray();
+        return await results;
     }
 
     async getItems(collection: string): Promise<any[]> {
