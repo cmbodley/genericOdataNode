@@ -5,6 +5,7 @@ import * as config from './config.json';
 
 // update the config
 const repos = process.env.REPOS;
+const dbName = process.env.DBNAME;
 
 const newConfig = {
     mongoDb: config.mongoDb,    
@@ -17,7 +18,7 @@ const newConfig = {
 if(repos !== null && repos !== undefined){
     const repoItems = repos.split(',');
     newConfig['mongoCollection'] = repoItems;
-    console.log({newConfig});
+    newConfig['mongoDb'] = dbName;
     writeFileSync(`${p.join(__dirname,'config.json')}`, JSON.stringify(newConfig), {encoding:'utf8', flag:'w'});
 }
 

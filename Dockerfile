@@ -1,7 +1,7 @@
 # lets do this first i want this to based on the 
 FROM node:lts
 ENV REPOS=cars,planes,trains
-ENV DBName=Repository
+ENV DBNAME=repository
 #create worker directory
 WORKDIR /usr/src/app/lib
 

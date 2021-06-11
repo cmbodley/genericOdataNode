@@ -1,21 +1,22 @@
-import { 
-    Content, 
-    Info, 
-    ObjectType, 
-    RefLink, 
-    RootObject, 
-    SchemaLink, 
-    SwaggerParameter, 
-    SwagResponse, 
-    Verbs 
+import {
+    Content,
+    Info,
+    ObjectType,
+    RefLink,
+    RequestBodySwag,
+    RootObject,
+    SchemaLink,
+    SwaggerParameter,
+    SwagResponse,
+    Verbs
 } from './swagger-interfaces/info';
 
 export class SwaggerService {
-    
+
     private collections: string[];
     public swagger: RootObject;
 
-    constructor(collection: string[]) {        
+    constructor(collection: string[]) {
         this.collections = collection;
         this.swagger = {
             openapi: "3.0.0",
@@ -73,11 +74,14 @@ export class SwaggerService {
         } as SwaggerParameter;
     }
 
+
+
     setupCollectionPaths() {
         this.collections.forEach(a => {
             const basicItems = ['get', 'put', 'delete'];
             const pathItem = {} as any;
             basicItems.forEach(b => {
+                const body = b === 'put';
                 pathItem[b] = {
                     operationId: `${b}${a}`,
                     parameters: [this.getIdParameter(true)],
@@ -87,7 +91,12 @@ export class SwaggerService {
                             description: "200 response",
                             content: this.getEmptyResponse()
                         } as SwagResponse
-                    }
+                    },
+                    requestBody: body ? {
+                        description: `This is just an object end point uses to create or update the document.`,
+                        required: true,
+                        content: this.getEmptyResponse()
+                    } as RequestBodySwag : undefined
                 } as Verbs
             });
 
@@ -102,7 +111,7 @@ export class SwaggerService {
                         content: this.getEmptyResponse()
                     } as SwagResponse
                 }
-            }
+            } as Verbs
 
             const postItem = {
                 operationId: `getsAll${a}`,
@@ -112,8 +121,13 @@ export class SwaggerService {
                         description: "200 response",
                         content: this.getEmptyResponse()
                     } as SwagResponse
-                }
-            }
+                },
+                requestBody: {
+                    description: `This is just an object end point uses to create or update the document.`,
+                    required: true,
+                    content: this.getEmptyResponse()
+                } as RequestBodySwag
+            } as Verbs
 
             this.swagger.paths[`/${a}/{id}`] = pathItem;
             this.swagger.paths[`/${a}`] = {
@@ -132,10 +146,20 @@ export class SwaggerService {
                         summary: `Adds an array of objects to the ${a} Collection`,
                         responses: {
                             "200": {
-                                description: "200 response",
-                                content: this.getEmptyResponse()
+                                description: "200 response"                              
                             } as SwagResponse
-                        }
+                        },
+                        requestBody: {
+                            description: `This is just an object end point uses to create or update the document.`,
+                            required: true,
+                            content: {
+                                type:"array",
+                                items: {
+                                    "$ref": "#/components/schemas/emptyObject"
+                                } as any,
+                                nullable: true
+                            } as any
+                        } as RequestBodySwag
                     } as Verbs
                 } else {
                     pathItem['get'] = {
@@ -147,7 +171,7 @@ export class SwaggerService {
                                 content: this.getEmptyResponse()
                             } as SwagResponse
                         }
-                    } as Verbs                 
+                    } as Verbs
                 }
 
                 this.swagger.paths[`/${a}/${b}`] = pathItem

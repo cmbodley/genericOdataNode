@@ -50,8 +50,9 @@ export interface RootObject {
 export interface Verbs {
     operationId:string;
     summary:string;
+    requestBody: RequestBodySwag;
     responses: any;
-    parameters: SwaggerParameter[]
+    parameters: SwaggerParameter[];
 }
 
 export interface SwagResponse {
@@ -81,4 +82,10 @@ export interface SwaggerParameter {
     in: string;
     required: boolean;
     allowEmptyValue: boolean;
+}
+
+export interface RequestBodySwag {
+    description: string;
+    required: boolean;
+    content: any;
 }
