@@ -52,7 +52,7 @@ export interface Verbs {
     summary:string;
     requestBody: RequestBodySwag;
     responses: any;
-    parameters: SwaggerParameter[];
+    parameters: any[];    
 }
 
 export interface SwagResponse {

@@ -31,7 +31,56 @@ export class SwaggerService {
                     emptyObject: {
                         type: "object",
                         properties: {}
-                    } as ObjectType
+                    } as ObjectType,
+                    "count":{
+                        "anyOf":[
+                           {
+                              "type":"integer",
+                              "minimum":0
+                           },
+                           {
+                              "type":"string"
+                           }
+                        ],
+                        "description":"The number of entities in the collection. Available when using the [$count](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptioncount) query option."
+                     }
+                },
+                "parameters":{
+                    "top":{
+                       "name":"$top",
+                       "in":"query",
+                       "description":"Show only the first n items, see [Paging - Top](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptiontop)",
+                       "schema":{
+                          "type":"integer",
+                          "minimum":0
+                       },
+                       "example":50
+                    },
+                    "skip":{
+                       "name":"$skip",
+                       "in":"query",
+                       "description":"Skip the first n items, see [Paging - Skip](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionskip)",
+                       "schema":{
+                          "type":"integer",
+                          "minimum":0
+                       }
+                    },
+                    "count":{
+                       "name":"$count",
+                       "in":"query",
+                       "description":"Include count of items, see [Count](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptioncount)",
+                       "schema":{
+                          "type":"boolean"
+                       }
+                    },
+                    "search":{
+                       "name":"$search",
+                       "in":"query",
+                       "description":"Search items by search phrases, see [Searching](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionsearch)",
+                       "schema":{
+                          "type":"string"
+                       }
+                    }
                 }
             } as any
         } as RootObject;
@@ -126,7 +175,7 @@ export class SwaggerService {
                     description: `This is just an object end point uses to create or update the document.`,
                     required: true,
                     content: this.getEmptyResponse()
-                } as RequestBodySwag
+                } as RequestBodySwag 
             } as Verbs
 
             this.swagger.paths[`/${a}/{id}`] = pathItem;
@@ -146,19 +195,24 @@ export class SwaggerService {
                         summary: `Adds an array of objects to the ${a} Collection`,
                         responses: {
                             "200": {
-                                description: "200 response"                              
+                                description: "200 response",
+                                content: this.getEmptyResponse()
                             } as SwagResponse
                         },
                         requestBody: {
                             description: `This is just an object end point uses to create or update the document.`,
                             required: true,
                             content: {
-                                type:"array",
-                                items: {
-                                    "$ref": "#/components/schemas/emptyObject"
-                                } as any,
-                                nullable: true
-                            } as any
+                                "application/json": {
+                                    schema: {
+                                        type: "array",
+                                        items: {
+                                            "$ref": "#/components/schemas/emptyObject"
+                                        } as any,
+                                        nullable: true
+                                    }
+                                } as any
+                            }
                         } as RequestBodySwag
                     } as Verbs
                 } else {
@@ -170,7 +224,110 @@ export class SwaggerService {
                                 description: "200 response",
                                 content: this.getEmptyResponse()
                             } as SwagResponse
-                        }
+                        },
+                        "parameters":[
+                            {
+                               "$ref":"#/components/parameters/top"
+                            },
+                            {
+                               "$ref":"#/components/parameters/skip"
+                            },
+                            {
+                               "$ref":"#/components/parameters/search"
+                            },
+                            {
+                               "name":"$filter",
+                               "description":"Filter items by property values, see [Filtering](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionfilter)",
+                               "in":"query",
+                               "schema":{
+                                  "type":"string"
+                               }
+                            },
+                            {
+                               "$ref":"#/components/parameters/count"
+                            },
+                            {
+                               "name":"$orderby",
+                               "description":"Order items by property values, see [Sorting](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionorderby)",
+                               "in":"query",
+                               "explode":false,
+                               "schema":{
+                                  "type":"array",
+                                  "uniqueItems":true,
+                                  "items":{
+                                     "type":"string",
+                                     "enum":[
+                                        "CustomerID",
+                                        "CustomerID desc",
+                                        "CompanyName",
+                                        "CompanyName desc",
+                                        "ContactName",
+                                        "ContactName desc",
+                                        "ContactTitle",
+                                        "ContactTitle desc",
+                                        "Address",
+                                        "Address desc",
+                                        "City",
+                                        "City desc",
+                                        "Region",
+                                        "Region desc",
+                                        "PostalCode",
+                                        "PostalCode desc",
+                                        "Country",
+                                        "Country desc",
+                                        "Phone",
+                                        "Phone desc",
+                                        "Fax",
+                                        "Fax desc"
+                                     ]
+                                  }
+                               }
+                            },
+                            {
+                               "name":"$select",
+                               "description":"Select properties to be returned, see [Select](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionselect)",
+                               "in":"query",
+                               "explode":false,
+                               "schema":{
+                                  "type":"array",
+                                  "uniqueItems":true,
+                                  "items":{
+                                     "type":"string",
+                                     "enum":[
+                                        "CustomerID",
+                                        "CompanyName",
+                                        "ContactName",
+                                        "ContactTitle",
+                                        "Address",
+                                        "City",
+                                        "Region",
+                                        "PostalCode",
+                                        "Country",
+                                        "Phone",
+                                        "Fax"
+                                     ]
+                                  }
+                               }
+                            },
+                            {
+                               "name":"$expand",
+                               "description":"Expand related entities, see [Expand](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionexpand)",
+                               "in":"query",
+                               "explode":false,
+                               "schema":{
+                                  "type":"array",
+                                  "uniqueItems":true,
+                                  "items":{
+                                     "type":"string",
+                                     "enum":[
+                                        "*",
+                                        "Orders",
+                                        "CustomerDemographics"
+                                     ]
+                                  }
+                               }
+                            }
+                         ],
                     } as Verbs
                 }
 

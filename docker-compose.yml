@@ -15,7 +15,7 @@ services:
       dockerfile: ./Dockerfile
     environment:
       NODE_ENV: production
-      REPOS: "trains"
+      REPOS: "countries, bobs"
       DBNAME: "datastore-1"
     ports:
       - 80:3000
