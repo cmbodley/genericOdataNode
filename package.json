@@ -25,7 +25,7 @@
     "express": "^4.17.1",
     "mongodb": "^3.5.7",
     "mongoose": "^5.12.13",
-    "nodemon": "^2.0.4",
+    "nodemon": "^2.0.20",
     "odata-v4-mongodb": "^0.1.12",
     "q": "^1.5.1",
     "routes": "^2.1.0",
